@@ -15,6 +15,22 @@
     @if (session('error'))
       <div class="alert alert-danger">{{session('error')}}</div>      
     @endif
+    <div class="row">
+      <div class="col-md-12">
+        <div class="form-group row">
+          <label class="col-1 control-label col-form-label">Filter:</label>
+          <div class="col-3">
+            <select class="form-control" name="level_id" id="level_id" required>
+              <option value="">- semua -</option>
+              @foreach($level as $item)
+                <option value="{{ $item->level_id }}">{{ $item->level_name}}</option>
+              @endforeach
+            </select>
+            <small class="form-text text-muted">Level Pengguna</small>
+          </div>
+        </div>
+      </div>
+    </div>
     <table class="table table-bordered table-striped table-hover table-sm" id="table_user">
       <thead> 
         <tr>
@@ -42,12 +58,15 @@ $(document).ready(function() {
     serverSide: true,
     processing: true,
     ajax: { 
-      url: "{{ url('user/list') }}", 
-      dataType: "json", 
-      type: "POST",
-      headers: {
+    url: "{{ url('user/list') }}", 
+    dataType: "json", 
+    type: "POST",
+    data: function(d){
+        d.level_id = $('#level_id').val(); // ← kecilin jarak val() ke titiknya
+    }, // ← ini perlu koma di sini!!
+    headers: {
         'X-CSRF-TOKEN': '{{ csrf_token() }}' // untuk keamanan saat POST
-      }
+    }
     },
     columns: [ 
       { 
@@ -82,6 +101,10 @@ $(document).ready(function() {
       }
     ]
   }); 
+$('#level_id').on('change', function(){
+  dataUser.ajax.reload();
+});
+
 });
 </script> 
 @endpush
