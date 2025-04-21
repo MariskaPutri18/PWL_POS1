@@ -62,8 +62,8 @@ $(document).ready(function() {
     dataType: "json", 
     type: "POST",
     data: function(d){
-        d.level_id = $('#level_id').val(); // ← kecilin jarak val() ke titiknya
-    }, // ← ini perlu koma di sini!!
+        d.level_id = $('#level_id').val(); 
+    }, 
     headers: {
         'X-CSRF-TOKEN': '{{ csrf_token() }}' // untuk keamanan saat POST
     }
