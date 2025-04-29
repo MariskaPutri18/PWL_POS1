@@ -115,32 +115,32 @@ class UserController extends Controller
         $activeMenu = 'user'; //set menu yang sedang aktif
 
         return view('user.show', ['breadcrumb' => $breadcrumb, 'page'=> $page, 'user'=>$user, 'activeMenu'=>$activeMenu]);
-    }
-    // Menampilkan halaman form edit user
-    public function edit(string $id)
-    {
-        $user = UserModel::find($id);
-        $level = LevelModel::all();
+         }
+        // Menampilkan halaman form edit user
+        public function edit(string $id)
+        {
+            $user = UserModel::find($id);
+            $level = LevelModel::all();
 
-        $breadcrumb = (object) [
-            'title' => 'Edit User',
-            'list' => ['Home', 'User', 'Edit']
-        ];
+            $breadcrumb = (object) [
+                'title' => 'Edit User',
+                'list' => ['Home', 'User', 'Edit']
+            ];
 
-        $page = (object) [
-            'title' => 'Edit user'
-        ];
+            $page = (object) [
+                'title' => 'Edit user'
+            ];
 
-        $activeMenu = 'user'; // set menu yang sedang aktif
+            $activeMenu = 'user'; // set menu yang sedang aktif
 
-        return view('user.edit', [
-            'breadcrumb' => $breadcrumb,
-            'page' => $page,
-            'user' => $user,
-            'level' => $level,
-            'activeMenu' => $activeMenu
-        ]);
-    }
+            return view('user.edit', [
+                'breadcrumb' => $breadcrumb,
+                'page' => $page,
+                'user' => $user,
+                'level' => $level,
+                'activeMenu' => $activeMenu
+            ]);
+        }
 
     // Menyimpan perubahan data user
     public function update(Request $request, string $id)
@@ -215,16 +215,16 @@ class UserController extends Controller
         ]);
     }
 
-    return redirect('/');
-   }
+        return redirect('/');
+    }
 
-   //Menampilkan halaman form edit user ajax
-   public function edit_ajax(string $id){
-    $user = UserModel::find($id);
-    $level = LevelModel::select('level_id', 'level_name')-> get();
+    //Menampilkan halaman form edit user ajax
+    public function edit_ajax(string $id){
+        $user = UserModel::find($id);
+        $level = LevelModel::select('level_id', 'level_name')-> get();
 
-    return view ('user.edit_ajax', ['user' => $user, 'level' => $level]);
-   }
+        return view ('user.edit_ajax', ['user' => $user, 'level' => $level]);
+    }
 
    public function update_ajax(Request $request, $id){
     // cek apakah request dari ajax
@@ -268,6 +268,29 @@ class UserController extends Controller
     return redirect('/');
     }
 
+    public function confirm_ajax(string $id){
+        $user = UserModel::find($id);
 
+        return view('user.confirm_ajax',['user' => $user]);
+    }
+
+    public function delete_ajax(Request $request, $id){
+        if ($request->ajax() || $request->wantsJson()){
+            $user = UserModel::find($id);
+            if ($user) {
+                $user->delete();
+                return response()->json([
+                    'status' => true,
+                    'message'=> 'Data berhasil dihapus'
+                ]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message'=> 'Data berhasil dihapus'
+                ]);
+            }
+        }
+         return redirect('/');
+    }
 }
 ?>
