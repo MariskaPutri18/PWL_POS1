@@ -49,6 +49,10 @@ Route::group(['prefix' => 'kategori'], function () {
     Route::get('/{id}', [KategoriController::class, 'show']); // menampilkan detail kategori
     Route::get('/{id}/edit', [KategoriController::class, 'edit']); // menampilkan halaman form edit kategori
     Route::put('/{id}', [KategoriController::class, 'update']); // menyimpan perubahan data kategori
+    Route::get('/{id}/edit_ajax', [KategoriController::class, 'edit_ajax']); //Menampilkan form edit dengan ajax
+    Route::put('/{id}/update_ajax', [KategoriController::class, 'update_ajax']); //Menampilkan form update dengan ajax
+    Route::get('/{id}/delete_ajax', [KategoriController::class, 'confirm_ajax']); //untuk tampilkan form confirm delete user ajax
+    Route::delete('/{id}/delete_ajax',[KategoriController::class, 'delete_ajax']); //Untuk hapus data user ajax
     Route::delete('/{id}', [KategoriController::class, 'destroy']); // menghapus data kategori
 });
 

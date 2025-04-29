@@ -199,48 +199,48 @@ use Illuminate\Support\Facades\Validator;
     }
     
 
-public function update_ajax(Request $request, $id)
-{
-    // Pastikan permintaan berasal dari AJAX atau menginginkan JSON
-    if ($request->ajax() || $request->wantsJson()) {
-        // Validasi input
-        $rules = [
-            'level_kode' => 'required|string|max:5',
-            'level_name' => 'required|string|max:100'
-        ];
+    public function update_ajax(Request $request, $id)
+    {
+        // Pastikan permintaan berasal dari AJAX atau menginginkan JSON
+        if ($request->ajax() || $request->wantsJson()) {
+            // Validasi input
+            $rules = [
+                'level_kode' => 'required|string|max:5',
+                'level_name' => 'required|string|max:100'
+            ];
 
-        $validator = Validator::make($request->all(), $rules);
+            $validator = Validator::make($request->all(), $rules);
 
-        // Jika validasi gagal
-        if ($validator->fails()) {
-            return response()->json([
-                'status'   => false,
-                'message'  => 'Validasi gagal.',
-                'msgField' => $validator->errors()
-            ]);
+            // Jika validasi gagal
+            if ($validator->fails()) {
+                return response()->json([
+                    'status'   => false,
+                    'message'  => 'Validasi gagal.',
+                    'msgField' => $validator->errors()
+                ]);
+            }
+
+            // Temukan data level berdasarkan ID
+            $level = LevelModel::find($id);
+
+            if ($level) {
+                // Hanya update field yang divalidasi, bukan semua input
+                $dataUpdate = $request->only(['level_kode', 'level_name']);
+
+                // Update data
+                $level->update($dataUpdate);
+
+                return response()->json([
+                    'status'  => true,
+                    'message' => 'Data berhasil diupdate.'
+                ]);
+            } else {
+                return response()->json([
+                    'status'  => false,
+                    'message' => 'Data tidak ditemukan.'
+                ]);
+            }
         }
-
-        // Temukan data level berdasarkan ID
-        $level = LevelModel::find($id);
-
-        if ($level) {
-            // Hanya update field yang divalidasi, bukan semua input
-            $dataUpdate = $request->only(['level_kode', 'level_name']);
-
-            // Update data
-            $level->update($dataUpdate);
-
-            return response()->json([
-                'status'  => true,
-                'message' => 'Data berhasil diupdate.'
-            ]);
-        } else {
-            return response()->json([
-                'status'  => false,
-                'message' => 'Data tidak ditemukan.'
-            ]);
-        }
-    }
 
     // Jika bukan permintaan AJAX, redirect ke home
     return redirect('/');
