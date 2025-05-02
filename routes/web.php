@@ -65,6 +65,10 @@ Route::group(['prefix' => 'supplier'], function () {
     Route::get('/{id}', [SupplierController::class, 'show']);
     Route::get('/{id}/edit', [SupplierController::class, 'edit']);
     Route::put('/{id}', [SupplierController::class, 'update']);
+    Route::get('/{id}/edit_ajax', [SupplierController::class, 'edit_ajax']); //Menampilkan form edit dengan ajax
+    Route::put('/{id}/update_ajax', [SupplierController::class, 'update_ajax']); //Menampilkan form update dengan ajax
+    Route::get('/{id}/delete_ajax', [SupplierController::class, 'confirm_ajax']); //untuk tampilkan form confirm delete user ajax
+    Route::delete('/{id}/delete_ajax',[SupplierController::class, 'delete_ajax']); //Untuk hapus data user ajax
     Route::delete('/{id}', [SupplierController::class, 'destroy']);
 });
 
